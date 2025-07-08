@@ -9,7 +9,7 @@ python := "python3"
 browser := python + ' -c "import os, webbrowser, sys; from urllib.request import pathname2url; webbrowser.open(\"file://\" + pathname2url(os.path.abspath(sys.argv[1])))"'
 
 # Remove all build, test, coverage and Python artifacts
-clean: clean-build clean-pyc clean-test clean-doc
+clean: clean-build clean-pyc clean-test
 
 # Remove build artifacts
 clean-build:
@@ -35,9 +35,6 @@ clean-test:
     rm -fr htmlcov/
     rm -fr .pytest_cache
 
-# Remove documentation artifacts
-clean-doc:
-    rm -rf docs/build
 
 # Check style with flake8
 lint:
@@ -63,18 +60,6 @@ coverage:
     coverage html
     {{browser}} htmlcov/index.html
 
-# Generate Sphinx HTML documentation, including API docs
-docs:
-    rm -f docs/imagehash.rst
-    rm -f docs/modules.rst
-    sphinx-apidoc -H API -o docs/ src/imagehash
-    rm -rf docs/build
-    sphinx-build -b html docs docs/build/html
-    {{browser}} docs/build/html/index.html
-
-# Compile the docs watching for changes
-servedocs: docs
-    watchmedo shell-command -p '*.rst' -c 'sphinx-build -b html docs docs/build/html' -R -D .
 
 # Package and upload a release
 release: dist
