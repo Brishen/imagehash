@@ -36,14 +36,15 @@ clean-test:
     rm -fr .pytest_cache
 
 
-# Check style with flake8
+# Check code style and types
 lint:
-    flake8 .
+    ruff check .
+    mypy .
 
-# Fix style with autopep8 and isort
+# Fix code style automatically
 lint-fix:
-    autopep8 . --in-place --aggressive --aggressive --aggressive --recursive --ignore=W191,E101,E111,E122
-    isort .
+    ruff check --fix .
+    ruff format .
 
 # Run tests quickly with the default Python
 test:
