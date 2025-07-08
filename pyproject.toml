@@ -2,7 +2,7 @@
 name = "ImageHash"
 version = "4.3.2"
 description = "Image Hashing library"
-readme = "README.rst"
+readme = "README.md"
 authors = [
     { name = "Johannes Buchner", email = "buchner.johannes@gmx.at" }
 ]
@@ -50,7 +50,7 @@ include = [
     "src/imagehash",
     "/tests",
     "/find_similar_images.py",
-    "/README.rst",
+    "/README.md",
     "/LICENSE",
 ]
 
