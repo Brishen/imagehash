@@ -1,14 +1,55 @@
 [project]
-name = "imagehash"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+name = "ImageHash"
+version = "4.3.2"
+description = "Image Hashing library"
+readme = "README.rst"
 authors = [
-    { name = "Brishen", email = "brishen.hawkins@gmail.com" }
+    { name = "Johannes Buchner", email = "buchner.johannes@gmx.at" }
 ]
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.7"
+dependencies = [
+    "numpy",
+    "scipy",
+    "pillow",
+    "PyWavelets",
+]
+license = { text = "2-clause BSD License" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Graphics",
+]
+
+[project.urls]
+Homepage = "https://github.com/JohannesBuchner/imagehash"
+Repository = "https://github.com/JohannesBuchner/imagehash"
+
+[project.scripts]
+find_similar_images = "find_similar_images:main"
+
+[project.optional-dependencies]
+test = ["pytest>=3"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["imagehash"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/imagehash",
+    "/tests",
+    "/find_similar_images.py",
+    "/README.rst",
+    "/LICENSE",
+]
