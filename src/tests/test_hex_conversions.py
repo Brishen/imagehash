@@ -98,11 +98,13 @@ class TestHexConversions(unittest.TestCase):
 
 	def test_binary_array_to_hex_input(self):
 		for case in hexadecimal_to_bool_array:
-			self.assertEqual(case[0], self.to_hex(case[1]))
+			result = self.to_hex(case[1])
+			self.assertEqual(case[0], result)
 
 	def test_hex_to_hash_output(self):
 		for case in hexadecimal_to_bool_array:
-			self.assertTrue(np.array_equal(case[1], self.from_hex(case[0]).hash))
+			hash_result = self.from_hex(case[0])
+			self.assertTrue(np.array_equal(case[1], hash_result.hash))
 
 	def test_conversion_to_hex(self):
 		for case in binary_to_hexadecimal_values:
@@ -114,7 +116,8 @@ class TestHexConversions(unittest.TestCase):
 	def test_conversion_from_hex(self):
 		for case in hexadecimal_to_binary_values:
 			expected = case[1]
-			result = ''.join(str(b) for b in 1 * self.from_hex(case[0]).hash.flatten())
+			hash_result = self.from_hex(case[0])
+			result = ''.join(str(b) for b in 1 * hash_result.hash.flatten())
 			self.assertEqual(expected, result)
 
 

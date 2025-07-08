@@ -140,7 +140,7 @@ def whash(image: 'Image.Image', hash_size: int = 8, image_scale: int | None = No
 					'db4' - Daubechies wavelets
 	@remove_max_haar_ll - remove the lowest low level (LL) frequency using Haar wavelet.
 	"""
-	import pywt
+	import pywt  # type: ignore
 
 	if image_scale is not None:
 		assert image_scale & (image_scale - 1) == 0, 'image_scale is not power of 2'
