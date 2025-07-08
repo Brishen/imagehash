@@ -35,10 +35,13 @@ def hex_to_hash(hexstr):
 	2. This algorithm does not work for hash_size < 2.
 	"""
 	from .core import ImageHash
+
 	hash_size = int(numpy.sqrt(len(hexstr) * 4))
 	# assert hash_size == numpy.sqrt(len(hexstr)*4)
 	binary_array = '{:0>{width}b}'.format(int(hexstr, 16), width=hash_size * hash_size)
-	bit_rows = [binary_array[i:i + hash_size] for i in range(0, len(binary_array), hash_size)]
+	bit_rows = [
+		binary_array[i : i + hash_size] for i in range(0, len(binary_array), hash_size)
+	]
 	hash_array = numpy.array([[bool(int(d)) for d in row] for row in bit_rows])
 	return ImageHash(hash_array)
 
@@ -46,9 +49,12 @@ def hex_to_hash(hexstr):
 def hex_to_flathash(hexstr, hashsize):
 	# type: (str, int) -> ImageHash
 	from .core import ImageHash
+
 	hash_size = int(len(hexstr) * 4 / (hashsize))
 	binary_array = '{:0>{width}b}'.format(int(hexstr, 16), width=hash_size * hashsize)
-	hash_array = numpy.array([[bool(int(d)) for d in binary_array]])[-hash_size * hashsize:]
+	hash_array = numpy.array([[bool(int(d)) for d in binary_array]])[
+		-hash_size * hashsize :
+	]
 	return ImageHash(hash_array)
 
 
@@ -66,6 +72,7 @@ def hex_to_multihash(hexstr):
 	2. This algorithm does not work for hash_size < 2.
 	"""
 	from .core import ImageMultiHash
+
 	split = hexstr.split(',')
 	hashes = [hex_to_hash(x) for x in split]
 	return ImageMultiHash(hashes)
@@ -81,15 +88,16 @@ def old_hex_to_hash(hexstr, hash_size=8):
 	be used instead.
 	"""
 	from .core import ImageHash
+
 	arr = []
 	count = hash_size * (hash_size // 4)
 	if len(hexstr) != count:
 		emsg = 'Expected hex string size of {}.'
 		raise ValueError(emsg.format(count))
 	for i in range(count // 2):
-		h = hexstr[i * 2:i * 2 + 2]
+		h = hexstr[i * 2 : i * 2 + 2]
 		v = int('0x' + h, 16)
-		arr.append([v & 2 ** i > 0 for i in range(8)])
+		arr.append([v & 2**i > 0 for i in range(8)])
 	return ImageHash(numpy.array(arr))
 
 
@@ -112,12 +120,7 @@ def _find_region(remaining_pixels, segmented_pixels):
 		# Find surrounding pixels
 		for pixel in new_pixels:
 			x, y = pixel
-			neighbours = [
-				(x - 1, y),
-				(x + 1, y),
-				(x, y - 1),
-				(x, y + 1)
-			]
+			neighbours = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
 			try_next.update(neighbours)
 		# Remove pixels we have already seen
 		try_next.difference_update(segmented_pixels, not_in_region)

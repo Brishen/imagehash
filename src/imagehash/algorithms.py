@@ -3,9 +3,9 @@ Hash algorithms for imagehash
 """
 
 import numpy
-from PIL import Image, ImageFilter
+from PIL import ImageFilter
+
 from imagehash.core import ImageHash, ImageMultiHash
-from imagehash.types import MeanFunc, HashFunc
 from imagehash.utils import ANTIALIAS, _find_all_segments
 
 
@@ -50,6 +50,7 @@ def phash(image, hash_size=8, highfreq_factor=4):
 		raise ValueError('Hash size must be greater than or equal to 2')
 
 	import scipy.fftpack
+
 	img_size = hash_size * highfreq_factor
 	image = image.convert('L').resize((img_size, img_size), ANTIALIAS)
 	pixels = numpy.asarray(image)
@@ -70,11 +71,12 @@ def phash_simple(image, hash_size=8, highfreq_factor=4):
 	@image must be a PIL instance.
 	"""
 	import scipy.fftpack
+
 	img_size = hash_size * highfreq_factor
 	image = image.convert('L').resize((img_size, img_size), ANTIALIAS)
 	pixels = numpy.asarray(image)
 	dct = scipy.fftpack.dct(pixels)
-	dctlowfreq = dct[:hash_size, 1:hash_size + 1]
+	dctlowfreq = dct[:hash_size, 1 : hash_size + 1]
 	avg = dctlowfreq.mean()
 	diff = dctlowfreq > avg
 	return ImageHash(diff)
@@ -138,10 +140,11 @@ def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=
 	@remove_max_haar_ll - remove the lowest low level (LL) frequency using Haar wavelet.
 	"""
 	import pywt
+
 	if image_scale is not None:
 		assert image_scale & (image_scale - 1) == 0, 'image_scale is not power of 2'
 	else:
-		image_natural_scale = 2**int(numpy.log2(min(image.size)))
+		image_natural_scale = 2 ** int(numpy.log2(min(image.size)))
 		image_scale = max(image_natural_scale, hash_size)
 
 	ll_max_level = int(numpy.log2(image_scale))
@@ -152,7 +155,7 @@ def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=
 	dwt_level = ll_max_level - level
 
 	image = image.convert('L').resize((image_scale, image_scale), ANTIALIAS)
-	pixels = numpy.asarray(image) / 255.
+	pixels = numpy.asarray(image) / 255.0
 
 	# Remove low level frequency LL(max_ll) if @remove_max_haar_ll using haar filter
 	if remove_max_haar_ll:
@@ -215,13 +218,19 @@ def colorhash(image, binbits=3):
 	# now we have fractions in each category (6*2 + 2 = 14 bins)
 	# convert to hash and discretize:
 	maxvalue = 2**binbits
-	values = [min(maxvalue - 1, int(frac_black * maxvalue)), min(maxvalue - 1, int(frac_gray * maxvalue))]
+	values = [
+		min(maxvalue - 1, int(frac_black * maxvalue)),
+		min(maxvalue - 1, int(frac_gray * maxvalue)),
+	]
 	for counts in list(h_faint_counts) + list(h_bright_counts):
 		values.append(min(maxvalue - 1, int(counts / c * maxvalue)))
 	# print(values)
 	bitarray = []
 	for v in values:
-		bitarray += [v // (2**(binbits - i - 1)) % 2**(binbits - i) > 0 for i in range(binbits)]
+		bitarray += [
+			v // (2 ** (binbits - i - 1)) % 2 ** (binbits - i) > 0
+			for i in range(binbits)
+		]
 	return ImageHash(numpy.asarray(bitarray).reshape((-1, binbits)))
 
 
@@ -231,7 +240,7 @@ def crop_resistant_hash(
 	limit_segments=None,  # type: int | None
 	segment_threshold=128,  # type: int
 	min_segment_size=500,  # type: int
-	segmentation_image_size=300  # type: int
+	segmentation_image_size=300,  # type: int
 ):
 	# type: (...) -> ImageMultiHash
 	"""
@@ -254,7 +263,9 @@ def crop_resistant_hash(
 
 	orig_image = image.copy()
 	# Convert to gray scale and resize
-	image = image.convert('L').resize((segmentation_image_size, segmentation_image_size), ANTIALIAS)
+	image = image.convert('L').resize(
+		(segmentation_image_size, segmentation_image_size), ANTIALIAS
+	)
 	# Add filters
 	image = image.filter(ImageFilter.GaussianBlur()).filter(ImageFilter.MedianFilter())
 	pixels = numpy.array(image).astype(numpy.float32)
@@ -263,7 +274,10 @@ def crop_resistant_hash(
 
 	# If there are no segments, have 1 segment including the whole image
 	if not segments:
-		full_image_segment = {(0, 0), (segmentation_image_size - 1, segmentation_image_size - 1)}
+		full_image_segment = {
+			(0, 0),
+			(segmentation_image_size - 1, segmentation_image_size - 1),
+		}
 		segments.append(full_image_segment)
 
 	# If segment limit is set, discard the smaller segments

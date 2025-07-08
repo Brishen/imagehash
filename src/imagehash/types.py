@@ -23,14 +23,15 @@ except (AttributeError, ImportError):
 # type of Callable
 if sys.version_info >= (3, 9, 0) and sys.version_info <= (3, 9, 1):
 	# https://stackoverflow.com/questions/65858528/is-collections-abc-callable-bugged-in-python-3-9-1
-	from typing import Callable
+	from collections.abc import Callable
 else:
 	from collections.abc import Callable
 
 try:
-	from PIL import Image
 	from typing import TYPE_CHECKING
-	
+
+	from PIL import Image
+
 	if TYPE_CHECKING:
 		from imagehash.core import ImageHash
 

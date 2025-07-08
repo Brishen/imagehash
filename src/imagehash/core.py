@@ -3,7 +3,7 @@ Core classes for imagehash
 """
 
 import numpy
-from imagehash.types import NDArray
+
 from imagehash.utils import binary_array_to_hex
 
 
@@ -27,7 +27,11 @@ class ImageHash:
 		if other is None:
 			raise TypeError('Other hash must not be None.')
 		if self.hash.size != other.hash.size:
-			raise TypeError('ImageHashes must be of the same shape.', self.hash.shape, other.hash.shape)
+			raise TypeError(
+				'ImageHashes must be of the same shape.',
+				self.hash.shape,
+				other.hash.shape,
+			)
 		return numpy.count_nonzero(self.hash.flatten() != other.hash.flatten())
 
 	def __eq__(self, other):
@@ -44,7 +48,7 @@ class ImageHash:
 
 	def __hash__(self):
 		# this returns a 8 bit integer, intentionally shortening the information
-		return sum([2**(i % 8) for i, v in enumerate(self.hash.flatten()) if v])
+		return sum([2 ** (i % 8) for i, v in enumerate(self.hash.flatten()) if v])
 
 	def __len__(self):
 		# Returns the bit length of the hash
@@ -119,7 +123,9 @@ class ImageMultiHash:
 			distances.append(lowest_distance)
 		return len(distances), sum(distances)
 
-	def matches(self, other_hash, region_cutoff=1, hamming_cutoff=None, bit_error_rate=None):
+	def matches(
+		self, other_hash, region_cutoff=1, hamming_cutoff=None, bit_error_rate=None
+	):
 		# type: (ImageMultiHash, int, float | None, float | None) -> bool
 		"""
 		Checks whether this hash matches another crop resistant hash, `other_hash`.
@@ -143,5 +149,7 @@ class ImageMultiHash:
 		"""
 		return min(
 			other_hashes,
-			key=lambda other_hash: self.__sub__(other_hash, hamming_cutoff, bit_error_rate)
+			key=lambda other_hash: self.__sub__(
+				other_hash, hamming_cutoff, bit_error_rate
+			),
 		)
