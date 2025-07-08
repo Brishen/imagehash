@@ -68,13 +68,13 @@ docs:
     rm -f docs/imagehash.rst
     rm -f docs/modules.rst
     sphinx-apidoc -H API -o docs/ src/imagehash
-    make -C docs clean
-    make -C docs html
+    rm -rf docs/build
+    sphinx-build -b html docs docs/build/html
     {{browser}} docs/build/html/index.html
 
 # Compile the docs watching for changes
 servedocs: docs
-    watchmedo shell-command -p '*.rst' -c 'make -C docs html' -R -D .
+    watchmedo shell-command -p '*.rst' -c 'sphinx-build -b html docs docs/build/html' -R -D .
 
 # Package and upload a release
 release: dist
