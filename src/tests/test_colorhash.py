@@ -1,10 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
 import unittest
 
 import imagehash
-
-from .utils import TestImageHash
+from tests.utils import TestImageHash
 
 CHECK_HASH_DEFAULT = range(2, 5)
 CHECK_HASH_SIZE_DEFAULT = range(-1, 1)
@@ -23,12 +20,12 @@ class Test(TestImageHash):
 		rotate_image = image.rotate(-1)
 		rotate_hash = func(rotate_image)
 		distance = original_hash - rotate_hash
-		emsg = ('slightly rotated image should have similar hash {} {} {}'.format(original_hash, rotate_hash, distance))
+		emsg = f'slightly rotated image should have similar hash {original_hash} {rotate_hash} {distance}'
 		self.assertTrue(distance <= 10, emsg)
 		self.assertEqual(original_hash, rotate_hash, emsg)
 		rotate_image = image.rotate(180)
 		rotate_hash = func(rotate_image)
-		emsg = ('flipped image should have same hash {} {}'.format(original_hash, rotate_hash))
+		emsg = f'flipped image should have same hash {original_hash} {rotate_hash}'
 		self.assertEqual(original_hash, rotate_hash, emsg)
 
 	def test_colorhash_stored(self):
@@ -44,16 +41,16 @@ class Test(TestImageHash):
 		for bit in binbits:
 			image_hash = func(image, bit)
 			other_hash = imagehash.hex_to_flathash(str(image_hash), bit * (2 + 6 * 2))
-			emsg = 'stringified hash {} != original hash {}'.format(other_hash, image_hash)
+			emsg = f'stringified hash {other_hash} != original hash {image_hash}'
 			self.assertEqual(image_hash, other_hash, emsg)
 			distance = image_hash - other_hash
-			emsg = ('unexpected hamming distance {}: original hash {} - stringified hash {}'.format(distance, image_hash, other_hash))
+			emsg = f'unexpected hamming distance {distance}: original hash {image_hash} - stringified hash {other_hash}'
 			self.assertEqual(distance, 0, emsg)
 
 	def check_hash_length(self, func, image, binbits=CHECK_HASH_DEFAULT):
 		for bit in binbits:
 			image_hash = func(image, bit)
-			emsg = 'bit={} is not respected'.format(bit)
+			emsg = f'bit={bit} is not respected'
 			self.assertEqual(image_hash.hash.size, (2 + 6 * 2) * bit, emsg)
 
 	def check_hash_size(self, func, image, binbits=CHECK_HASH_SIZE_DEFAULT):

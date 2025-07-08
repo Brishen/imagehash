@@ -11,10 +11,10 @@ def test_run():
 	parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 	with open(os.path.join(parent_dir, 'README.md')) as f:
 		content = f.read()
-	
+
 	# Extract Python code blocks
 	python_blocks = re.findall(r'```python\n(.*?)\n```', content, re.DOTALL)
-	
+
 	# Extract lines that start with >>>
 	chunk = []
 	for block in python_blocks:
@@ -24,5 +24,5 @@ def test_run():
 				chunk.append(line[4:] + '\n')  # Remove '>>> ' prefix
 
 	code = ''.join(chunk)
-	print("running::\n" + code)
-	print("result:", six.exec_(code, {}, {}))
+	print('running::\n' + code)
+	print('result:', six.exec_(code, {}, {}))

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
 import os
 import os.path
 import unittest
@@ -29,30 +27,30 @@ class TestImageHash(unittest.TestCase):
 		rotate_image = image.rotate(-1)
 		rotate_hash = func(rotate_image)
 		distance = original_hash - rotate_hash
-		emsg = ('slightly rotated image should have similar hash {} {} {}'.format(original_hash, rotate_hash, distance))
+		emsg = f'slightly rotated image should have similar hash {original_hash} {rotate_hash} {distance}'
 		self.assertTrue(distance <= 10, emsg)
 		rotate_image = image.rotate(-90)
 		rotate_hash = func(rotate_image)
-		emsg = ('rotated image should have different hash {} {}'.format(original_hash, rotate_hash))
+		emsg = f'rotated image should have different hash {original_hash} {rotate_hash}'
 		self.assertNotEqual(original_hash, rotate_hash, emsg)
 		distance = original_hash - rotate_hash
-		emsg = ('rotated image should have larger different hash {} {} {}'.format(original_hash, rotate_hash, distance))
+		emsg = f'rotated image should have larger different hash {original_hash} {rotate_hash} {distance}'
 		self.assertTrue(distance > 10, emsg)
 
 	def check_hash_length(self, func, image, sizes=CHECK_HASH_DEFAULT):
 		for hash_size in sizes:
 			image_hash = func(image, hash_size=hash_size)
-			emsg = 'hash_size={} is not respected'.format(hash_size)
+			emsg = f'hash_size={hash_size} is not respected'
 			self.assertEqual(image_hash.hash.size, hash_size**2, emsg)
 
 	def check_hash_stored(self, func, image, sizes=CHECK_HASH_DEFAULT):
 		for hash_size in sizes:
 			image_hash = func(image, hash_size)
 			other_hash = hex_to_hash(str(image_hash))
-			emsg = 'stringified hash {} != original hash {}'.format(other_hash, image_hash)
+			emsg = f'stringified hash {other_hash} != original hash {image_hash}'
 			self.assertEqual(image_hash, other_hash, emsg)
 			distance = image_hash - other_hash
-			emsg = ('unexpected hamming distance {}: original hash {} - stringified hash {}'.format(distance, image_hash, other_hash))
+			emsg = f'unexpected hamming distance {distance}: original hash {image_hash} - stringified hash {other_hash}'
 			self.assertEqual(distance, 0, emsg)
 
 	def check_hash_size(self, func, image, sizes=CHECK_HASH_SIZE_DEFAULT):

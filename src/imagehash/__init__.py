@@ -3,11 +3,12 @@ Perceptual image hashing library
 
 Example:
 
->>> from src import imagehash from PIL import Image
->>> hash = imagehash.average_hash(Image.open('test.png'))
+>>> from imagehash import average_hash
+>>> from PIL import Image
+>>> hash = average_hash(Image.open('test.png'))
 >>> print(hash)
 d879f8f89b1bbf
->>> otherhash = imagehash.average_hash(Image.open('other.bmp'))
+>>> otherhash = average_hash(Image.open('other.bmp'))
 >>> print(otherhash)
 ffff3720200ffff
 >>> print(hash == otherhash)
@@ -15,7 +16,7 @@ False
 >>> print(hash - otherhash)
 36
 >>> for r in range(1, 30, 5):
-...	rothash = imagehash.average_hash(Image.open('test.png').rotate(r))
+...	rothash = average_hash(Image.open('test.png').rotate(r))
 ...	print('Rotation by %d: %d Hamming difference' % (r, hash - rothash))
 ...
 Rotation by 1: 2 Hamming difference
@@ -27,25 +28,33 @@ Rotation by 26: 21 Hamming difference
 >>>
 """
 
-from __future__ import absolute_import, division, print_function
-
 # Import core classes
-from .core import ImageHash, ImageMultiHash
-
 # Import hash algorithms
-from .algorithms import (
-	average_hash, phash, phash_simple, dhash, dhash_vertical,
-	whash, colorhash, crop_resistant_hash
+from imagehash.algorithms import (
+	average_hash,
+	colorhash,
+	crop_resistant_hash,
+	dhash,
+	dhash_vertical,
+	phash,
+	phash_simple,
+	whash,
 )
-
-# Import utility functions
-from .utils import (
-	hex_to_hash, hex_to_flathash, hex_to_multihash, old_hex_to_hash,
-	_find_all_segments, ANTIALIAS, binary_array_to_hex
-)
+from imagehash.core import ImageHash, ImageMultiHash
 
 # Import type definitions
-from .types import WhashMode, NDArray, MeanFunc, HashFunc
+from imagehash.types import HashFunc, MeanFunc, NDArray, WhashMode
+
+# Import utility functions
+from imagehash.utils import (
+	ANTIALIAS,
+	_find_all_segments,
+	binary_array_to_hex,
+	hex_to_flathash,
+	hex_to_hash,
+	hex_to_multihash,
+	old_hex_to_hash,
+)
 
 __version__ = '4.3.2'
 

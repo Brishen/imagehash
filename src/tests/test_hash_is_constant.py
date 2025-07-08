@@ -20,7 +20,7 @@ def _calculate_segment_properties(segment):
 		'min_x': min_x,
 		'min_y': min_y,
 		'max_x': max_x,
-		'max_y': max_y
+		'max_y': max_y,
 	}
 
 
@@ -95,35 +95,116 @@ class Test(TestImageHash):
 		self.assertEqual(
 			hashlib.md5(image.tobytes()).hexdigest(),
 			known_bw_md5,
-			"This hash should match, unless pillow have changed Convert('L') again"
+			"This hash should match, unless pillow have changed Convert('L') again",
 		)
 		image = image.resize((300, 300), imagehash.ANTIALIAS)
 		# Add filters
-		image = image.filter(ImageFilter.GaussianBlur()).filter(ImageFilter.MedianFilter())
+		image = image.filter(ImageFilter.GaussianBlur()).filter(
+			ImageFilter.MedianFilter()
+		)
 		pixels = numpy.array(image).astype(numpy.float32)
 		# Segment
 		segments = imagehash._find_all_segments(pixels, 128, 500)
 		known_segment_count = 6
 		self.assertEqual(len(segments), known_segment_count)
 		if _pillow_has_convert_fix():
-			known_segments = sorted([
-				{'length': 595, 'min_x': 20, 'min_y': 0, 'max_x': 60, 'max_y': 31},
-				{'length': 1458, 'min_x': 61, 'min_y': 0, 'max_x': 156, 'max_y': 58},
-				{'length': 3505, 'min_x': 0, 'min_y': 111, 'max_x': 97, 'max_y': 191},
-				{'length': 8789, 'min_x': 112, 'min_y': 145, 'max_x': 299, 'max_y': 260},
-				{'length': 12153, 'min_x': 157, 'min_y': 0, 'max_x': 299, 'max_y': 148},
-				{'length': 60916, 'min_x': 0, 'min_y': 0, 'max_x': 299, 'max_y': 299}
-			], key=lambda x: (x['length'], x['min_x'], x['min_y'], x['max_x'], x['max_y']))
+			known_segments = sorted(
+				[
+					{'length': 595, 'min_x': 20, 'min_y': 0, 'max_x': 60, 'max_y': 31},
+					{
+						'length': 1458,
+						'min_x': 61,
+						'min_y': 0,
+						'max_x': 156,
+						'max_y': 58,
+					},
+					{
+						'length': 3505,
+						'min_x': 0,
+						'min_y': 111,
+						'max_x': 97,
+						'max_y': 191,
+					},
+					{
+						'length': 8789,
+						'min_x': 112,
+						'min_y': 145,
+						'max_x': 299,
+						'max_y': 260,
+					},
+					{
+						'length': 12153,
+						'min_x': 157,
+						'min_y': 0,
+						'max_x': 299,
+						'max_y': 148,
+					},
+					{
+						'length': 60916,
+						'min_x': 0,
+						'min_y': 0,
+						'max_x': 299,
+						'max_y': 299,
+					},
+				],
+				key=lambda x: (
+					x['length'],
+					x['min_x'],
+					x['min_y'],
+					x['max_x'],
+					x['max_y'],
+				),
+			)
 		else:
-			known_segments = sorted([
-				{'length': 591, 'min_x': 20, 'min_y': 0, 'max_x': 60, 'max_y': 31},
-				{'length': 1451, 'min_x': 61, 'min_y': 0, 'max_x': 156, 'max_y': 58},
-				{'length': 12040, 'min_x': 157, 'min_y': 0, 'max_x': 299, 'max_y': 147},
-				{'length': 3452, 'min_x': 0, 'min_y': 111, 'max_x': 97, 'max_y': 191},
-				{'length': 8701, 'min_x': 112, 'min_y': 145, 'max_x': 299, 'max_y': 259},
-				{'length': 61179, 'min_x': 0, 'min_y': 0, 'max_x': 299, 'max_y': 299}
-			], key=lambda x: (x['length'], x['min_x'], x['min_y'], x['max_x'], x['max_y']))
-		segment_properties = sorted([
-			_calculate_segment_properties(segment) for segment in segments
-		], key=lambda x: (x['length'], x['min_x'], x['min_y'], x['max_x'], x['max_y']))
+			known_segments = sorted(
+				[
+					{'length': 591, 'min_x': 20, 'min_y': 0, 'max_x': 60, 'max_y': 31},
+					{
+						'length': 1451,
+						'min_x': 61,
+						'min_y': 0,
+						'max_x': 156,
+						'max_y': 58,
+					},
+					{
+						'length': 12040,
+						'min_x': 157,
+						'min_y': 0,
+						'max_x': 299,
+						'max_y': 147,
+					},
+					{
+						'length': 3452,
+						'min_x': 0,
+						'min_y': 111,
+						'max_x': 97,
+						'max_y': 191,
+					},
+					{
+						'length': 8701,
+						'min_x': 112,
+						'min_y': 145,
+						'max_x': 299,
+						'max_y': 259,
+					},
+					{
+						'length': 61179,
+						'min_x': 0,
+						'min_y': 0,
+						'max_x': 299,
+						'max_y': 299,
+					},
+				],
+				key=lambda x: (
+					x['length'],
+					x['min_x'],
+					x['min_y'],
+					x['max_x'],
+					x['max_y'],
+				),
+			)
+		segment_properties = sorted(
+			[_calculate_segment_properties(segment) for segment in segments],
+			key=lambda x: (x['length'], x['min_x'], x['min_y'], x['max_x'], x['max_y']),
+		)
 		self.assertEqual(segment_properties, known_segments)

@@ -42,14 +42,16 @@ def find_similar_images(userpaths, hashfunc=imagehash.average_hash):
 				print('rm -v', img)
 		images[hash] = images.get(hash, []) + [img]
 
-	# for k, img_list in six.iteritems(images):
-	# 	if len(img_list) > 1:
-	# 		print(" ".join(img_list))
+
+# for k, img_list in six.iteritems(images):
+# 	if len(img_list) > 1:
+# 		print(" ".join(img_list))
 
 
 if __name__ == '__main__':  # noqa: C901
 	import os
 	import sys
+
 
 	def usage():
 		sys.stderr.write(
@@ -70,6 +72,7 @@ Method:
 """
 		)
 		sys.exit(1)
+
 
 	hashmethod = sys.argv[1] if len(sys.argv) > 1 else usage()
 	if hashmethod == 'ahash':

@@ -2,7 +2,7 @@
 Core classes for imagehash
 """
 
-from typing import TYPE_CHECKING, List, Tuple, Union
+from typing import TYPE_CHECKING
 
 import numpy
 
@@ -64,7 +64,7 @@ class ImageMultiHash:
 	The matching logic is implemented as described in Efficient Cropping-Resistant Robust Image Hashing
 	"""
 
-	def __init__(self, hashes: List[ImageHash]) -> None:
+	def __init__(self, hashes: list[ImageHash]) -> None:
 		self.segment_hashes = hashes
 
 	def __eq__(self, other):
@@ -77,7 +77,7 @@ class ImageMultiHash:
 		# type: (object) -> bool
 		return not self.matches(other)  # type: ignore
 
-	def __sub__(self, other: 'ImageMultiHash', hamming_cutoff: Union[float, None] = None, bit_error_rate: Union[float, None] = None) -> float:
+	def __sub__(self, other: 'ImageMultiHash', hamming_cutoff: float | None = None, bit_error_rate: float | None = None) -> float:
 		matches, sum_distance = self.hash_diff(other, hamming_cutoff, bit_error_rate)
 		max_difference = len(self.segment_hashes)
 		if matches == 0:
@@ -96,7 +96,7 @@ class ImageMultiHash:
 	def __repr__(self) -> str:
 		return repr(self.segment_hashes)
 
-	def hash_diff(self, other_hash: 'ImageMultiHash', hamming_cutoff: Union[float, None] = None, bit_error_rate: Union[float, None] = None) -> Tuple[int, int]:
+	def hash_diff(self, other_hash: 'ImageMultiHash', hamming_cutoff: float | None = None, bit_error_rate: float | None = None) -> tuple[int, int]:
 		"""
 		Gets the difference between two multi-hashes, as a tuple. The first element of the tuple is the number of
 		matching segments, and the second element is the sum of the hamming distances of matching hashes.
@@ -124,7 +124,7 @@ class ImageMultiHash:
 		return len(distances), sum(distances)
 
 	def matches(
-		self, other_hash: 'ImageMultiHash', region_cutoff: int = 1, hamming_cutoff: Union[float, None] = None, bit_error_rate: Union[float, None] = None
+		self, other_hash: 'ImageMultiHash', region_cutoff: int = 1, hamming_cutoff: float | None = None, bit_error_rate: float | None = None
 	) -> bool:
 		"""
 		Checks whether this hash matches another crop resistant hash, `other_hash`.
@@ -137,7 +137,7 @@ class ImageMultiHash:
 		matches, _ = self.hash_diff(other_hash, hamming_cutoff, bit_error_rate)
 		return matches >= region_cutoff
 
-	def best_match(self, other_hashes: List['ImageMultiHash'], hamming_cutoff: Union[float, None] = None, bit_error_rate: Union[float, None] = None) -> 'ImageMultiHash':
+	def best_match(self, other_hashes: list['ImageMultiHash'], hamming_cutoff: float | None = None, bit_error_rate: float | None = None) -> 'ImageMultiHash':
 		"""
 		Returns the hash in a list which is the best match to the current hash
 		:param other_hashes: A list of image multi hashes to compare against

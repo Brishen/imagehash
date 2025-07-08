@@ -1,17 +1,13 @@
-from __future__ import absolute_import, division, print_function
-
 import unittest
 
 import six
 from PIL import Image
 
 import imagehash
-
-from .utils import TestImageHash
+from tests.utils import TestImageHash
 
 
 class TestBasic(TestImageHash):
-
 	def setUp(self):
 		self.image = self.get_data_image()
 		self.func = imagehash.whash

@@ -2,7 +2,7 @@
 Utility functions for imagehash
 """
 
-from typing import TYPE_CHECKING, Set, Tuple
+from typing import TYPE_CHECKING
 
 import numpy
 from PIL import Image
@@ -102,15 +102,15 @@ def old_hex_to_hash(hexstr: str, hash_size: int = 8) -> 'ImageHash':
 	return ImageHash(numpy.array(arr))
 
 
-def _find_region(remaining_pixels: numpy.ndarray, segmented_pixels: Set[Tuple[int, int]]) -> Set[Tuple[int, int]]:
+def _find_region(remaining_pixels: numpy.ndarray, segmented_pixels: set[tuple[int, int]]) -> set[tuple[int, int]]:
 	"""
 	Finds a region and returns a set of pixel coordinates for it.
 	:param remaining_pixels: A numpy bool array, with True meaning the pixels are remaining to segment
 	:param segmented_pixels: A set of pixel coordinates which have already been assigned to segment. This will be
 	updated with the new pixels added to the returned segment.
 	"""
-	in_region: Set[Tuple[int, int]] = set()
-	not_in_region: Set[Tuple[int, int]] = set()
+	in_region: set[tuple[int, int]] = set()
+	not_in_region: set[tuple[int, int]] = set()
 	# Find the first pixel in remaining_pixels with a value of True
 	available_pixels = numpy.transpose(numpy.nonzero(remaining_pixels))
 	start = tuple(available_pixels[0])
@@ -141,7 +141,7 @@ def _find_region(remaining_pixels: numpy.ndarray, segmented_pixels: Set[Tuple[in
 	return in_region
 
 
-def _find_all_segments(pixels: numpy.ndarray, segment_threshold: int, min_segment_size: int) -> list[Set[Tuple[int, int]]]:
+def _find_all_segments(pixels: numpy.ndarray, segment_threshold: int, min_segment_size: int) -> list[set[tuple[int, int]]]:
 	"""
 	Finds all the regions within an image pixel array, and returns a list of the regions.
 
