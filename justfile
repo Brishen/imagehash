@@ -63,14 +63,13 @@ coverage:
 
 # Package and upload a release
 release: dist
-    twine upload -s dist/*.tar.gz dist/*.whl
+    uv publish
 
 # Build source and wheel package
 dist: clean
-    {{python}} setup.py sdist
-    {{python}} setup.py bdist_wheel
+    uv build
     ls -l dist
 
 # Install the package to the active Python's site-packages
 install: clean
-    {{python}} setup.py install
+    uv pip install .
