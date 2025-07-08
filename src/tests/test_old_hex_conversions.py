@@ -31,7 +31,7 @@ class TestOldHexConversions(unittest.TestCase):
 
 	def test_hex_to_hash_output(self):
 		for case in old_hexadecimal_to_bool_array:
-			hash_result = self.from_hex(case[0])
+			hash_result: imagehash.ImageHash = self.from_hex(case[0])
 			self.assertTrue(np.array_equal(case[1], hash_result.hash))
 
 
