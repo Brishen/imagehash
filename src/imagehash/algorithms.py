@@ -2,15 +2,20 @@
 Hash algorithms for imagehash
 """
 
+from typing import TYPE_CHECKING, Union
+
 import numpy
 from PIL import ImageFilter
 
 from imagehash.core import ImageHash, ImageMultiHash
 from imagehash.utils import ANTIALIAS, _find_all_segments
 
+if TYPE_CHECKING:
+	from PIL import Image
+	from imagehash.types import HashFunc, MeanFunc
 
-def average_hash(image, hash_size=8, mean=numpy.mean):
-	# type: (Image.Image, int, MeanFunc) -> ImageHash
+
+def average_hash(image: 'Image.Image', hash_size: int = 8, mean: 'MeanFunc' = numpy.mean) -> ImageHash:
 	"""
 	Average Hash computation
 
@@ -37,8 +42,7 @@ def average_hash(image, hash_size=8, mean=numpy.mean):
 	return ImageHash(diff)
 
 
-def phash(image, hash_size=8, highfreq_factor=4):
-	# type: (Image.Image, int, int) -> ImageHash
+def phash(image: 'Image.Image', hash_size: int = 8, highfreq_factor: int = 4) -> ImageHash:
 	"""
 	Perceptual Hash computation.
 
@@ -61,8 +65,7 @@ def phash(image, hash_size=8, highfreq_factor=4):
 	return ImageHash(diff)
 
 
-def phash_simple(image, hash_size=8, highfreq_factor=4):
-	# type: (Image.Image, int, int) -> ImageHash
+def phash_simple(image: 'Image.Image', hash_size: int = 8, highfreq_factor: int = 4) -> ImageHash:
 	"""
 	Perceptual Hash computation.
 
@@ -82,8 +85,7 @@ def phash_simple(image, hash_size=8, highfreq_factor=4):
 	return ImageHash(diff)
 
 
-def dhash(image, hash_size=8):
-	# type: (Image.Image, int) -> ImageHash
+def dhash(image: 'Image.Image', hash_size: int = 8) -> ImageHash:
 	"""
 	Difference Hash computation.
 
@@ -104,8 +106,7 @@ def dhash(image, hash_size=8):
 	return ImageHash(diff)
 
 
-def dhash_vertical(image, hash_size=8):
-	# type: (Image.Image, int) -> ImageHash
+def dhash_vertical(image: 'Image.Image', hash_size: int = 8) -> ImageHash:
 	"""
 	Difference Hash computation.
 
@@ -123,8 +124,7 @@ def dhash_vertical(image, hash_size=8):
 	return ImageHash(diff)
 
 
-def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=True):
-	# type: (Image.Image, int, int | None, str, bool) -> ImageHash
+def whash(image: 'Image.Image', hash_size: int = 8, image_scale: Union[int, None] = None, mode: str = 'haar', remove_max_haar_ll: bool = True) -> ImageHash:
 	"""
 	Wavelet Hash computation.
 
@@ -174,8 +174,7 @@ def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=
 	return ImageHash(diff)
 
 
-def colorhash(image, binbits=3):
-	# type: (Image.Image, int) -> ImageHash
+def colorhash(image: 'Image.Image', binbits: int = 3) -> ImageHash:
 	"""
 	Color Hash computation.
 
@@ -235,14 +234,13 @@ def colorhash(image, binbits=3):
 
 
 def crop_resistant_hash(
-	image,  # type: Image.Image
-	hash_func=dhash,  # type: HashFunc
-	limit_segments=None,  # type: int | None
-	segment_threshold=128,  # type: int
-	min_segment_size=500,  # type: int
-	segmentation_image_size=300,  # type: int
-):
-	# type: (...) -> ImageMultiHash
+	image: 'Image.Image',
+	hash_func: 'HashFunc' = dhash,
+	limit_segments: Union[int, None] = None,
+	segment_threshold: int = 128,
+	min_segment_size: int = 500,
+	segmentation_image_size: int = 300,
+) -> ImageMultiHash:
 	"""
 	Creates a CropResistantHash object, by the algorithm described in the paper "Efficient Cropping-Resistant Robust
 	Image Hashing". DOI 10.1109/ARES.2014.85

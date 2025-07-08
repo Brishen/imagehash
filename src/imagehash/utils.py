@@ -2,18 +2,23 @@
 Utility functions for imagehash
 """
 
+from typing import TYPE_CHECKING, Set, Tuple
+
 import numpy
 from PIL import Image
+
+if TYPE_CHECKING:
+	from imagehash.core import ImageHash, ImageMultiHash
 
 try:
 	ANTIALIAS = Image.Resampling.LANCZOS
 except AttributeError:
 	# deprecated in pillow 10
 	# https://pillow.readthedocs.io/en/stable/deprecations.html
-	ANTIALIAS = Image.ANTIALIAS
+	ANTIALIAS = Image.ANTIALIAS  # type: ignore
 
 
-def binary_array_to_hex(arr):
+def binary_array_to_hex(arr: numpy.ndarray) -> str:
 	"""
 	internal function to make a hex string out of a binary array.
 	"""
@@ -22,8 +27,7 @@ def binary_array_to_hex(arr):
 	return '{:0>{width}x}'.format(int(bit_string, 2), width=width)
 
 
-def hex_to_hash(hexstr):
-	# type: (str) -> ImageHash
+def hex_to_hash(hexstr: str) -> 'ImageHash':
 	"""
 	Convert a stored hash (hex, as retrieved from str(Imagehash))
 	back to a Imagehash object.
@@ -46,8 +50,7 @@ def hex_to_hash(hexstr):
 	return ImageHash(hash_array)
 
 
-def hex_to_flathash(hexstr, hashsize):
-	# type: (str, int) -> ImageHash
+def hex_to_flathash(hexstr: str, hashsize: int) -> 'ImageHash':
 	from .core import ImageHash
 
 	hash_size = int(len(hexstr) * 4 / (hashsize))
@@ -58,8 +61,7 @@ def hex_to_flathash(hexstr, hashsize):
 	return ImageHash(hash_array)
 
 
-def hex_to_multihash(hexstr):
-	# type: (str) -> ImageMultiHash
+def hex_to_multihash(hexstr: str) -> 'ImageMultiHash':
 	"""
 	Convert a stored multihash (hex, as retrieved from str(ImageMultiHash))
 	back to an ImageMultiHash object.
@@ -78,8 +80,7 @@ def hex_to_multihash(hexstr):
 	return ImageMultiHash(hashes)
 
 
-def old_hex_to_hash(hexstr, hash_size=8):
-	# type: (str, int) -> ImageHash
+def old_hex_to_hash(hexstr: str, hash_size: int = 8) -> 'ImageHash':
 	"""
 	Convert a stored hash (hex, as retrieved from str(Imagehash))
 	back to a Imagehash object. This method should be used for
@@ -101,15 +102,15 @@ def old_hex_to_hash(hexstr, hash_size=8):
 	return ImageHash(numpy.array(arr))
 
 
-def _find_region(remaining_pixels, segmented_pixels):
+def _find_region(remaining_pixels: numpy.ndarray, segmented_pixels: Set[Tuple[int, int]]) -> Set[Tuple[int, int]]:
 	"""
 	Finds a region and returns a set of pixel coordinates for it.
 	:param remaining_pixels: A numpy bool array, with True meaning the pixels are remaining to segment
 	:param segmented_pixels: A set of pixel coordinates which have already been assigned to segment. This will be
 	updated with the new pixels added to the returned segment.
 	"""
-	in_region = set()
-	not_in_region = set()
+	in_region: Set[Tuple[int, int]] = set()
+	not_in_region: Set[Tuple[int, int]] = set()
 	# Find the first pixel in remaining_pixels with a value of True
 	available_pixels = numpy.transpose(numpy.nonzero(remaining_pixels))
 	start = tuple(available_pixels[0])
@@ -140,7 +141,7 @@ def _find_region(remaining_pixels, segmented_pixels):
 	return in_region
 
 
-def _find_all_segments(pixels, segment_threshold, min_segment_size):
+def _find_all_segments(pixels: numpy.ndarray, segment_threshold: int, min_segment_size: int) -> list[Set[Tuple[int, int]]]:
 	"""
 	Finds all the regions within an image pixel array, and returns a list of the regions.
 

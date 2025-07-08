@@ -8,17 +8,19 @@ try:
 	# specify allowed values if possible (py3.8+)
 	from typing import Literal
 
-	WhashMode = Literal['haar', 'db4']  # type: ignore
+	WhashMode = Literal['haar', 'db4']
 except ImportError:
 	WhashMode = str  # type: ignore
 
 try:
 	# enable numpy array typing (py3.7+)
+	import numpy
 	import numpy.typing
 
 	NDArray = numpy.typing.NDArray[numpy.bool_]
 except (AttributeError, ImportError):
-	NDArray = list  # type: ignore
+	import numpy
+	NDArray = numpy.ndarray  # type: ignore
 
 # type of Callable
 if sys.version_info >= (3, 9, 0) and sys.version_info <= (3, 9, 1):
