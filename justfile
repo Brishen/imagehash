@@ -39,7 +39,7 @@ clean-test:
 # Check code style and types
 lint:
     ruff check .
-    mypy .
+    mypy src
 
 # Fix code style automatically
 lint-fix:
