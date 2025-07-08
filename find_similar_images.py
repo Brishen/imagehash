@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import absolute_import, division, print_function
 
 from PIL import Image
 
@@ -13,13 +12,23 @@ Demo of hashing
 def find_similar_images(userpaths, hashfunc=imagehash.average_hash):
 	def is_image(filename):
 		f = filename.lower()
-		return f.endswith('.png') or f.endswith('.jpg') or \
-			f.endswith('.jpeg') or f.endswith('.bmp') or \
-			f.endswith('.gif') or '.jpg' in f or f.endswith('.svg')
+		return (
+			f.endswith('.png')
+			or f.endswith('.jpg')
+			or f.endswith('.jpeg')
+			or f.endswith('.bmp')
+			or f.endswith('.gif')
+			or '.jpg' in f
+			or f.endswith('.svg')
+		)
 
 	image_filenames = []
 	for userpath in userpaths:
-		image_filenames += [os.path.join(userpath, path) for path in os.listdir(userpath) if is_image(path)]
+		image_filenames += [
+			os.path.join(userpath, path)
+			for path in os.listdir(userpath)
+			if is_image(path)
+		]
 	images = {}
 	for img in sorted(image_filenames):
 		try:
@@ -43,7 +52,8 @@ if __name__ == '__main__':  # noqa: C901
 	import sys
 
 	def usage():
-		sys.stderr.write("""SYNOPSIS: %s [ahash|phash|dhash|...] [<directory>]
+		sys.stderr.write(
+			"""SYNOPSIS: %s [ahash|phash|dhash|...] [<directory>]
 
 Identifies similar images in the directory.
 
@@ -57,7 +67,9 @@ Method:
   crop-resistant: Crop-resistant hash
 
 (C) Johannes Buchner, 2013-2017
-""" % sys.argv[0])
+"""
+			% sys.argv[0]
+		)
 		sys.exit(1)
 
 	hashmethod = sys.argv[1] if len(sys.argv) > 1 else usage()
@@ -70,6 +82,7 @@ Method:
 	elif hashmethod == 'whash-haar':
 		hashfunc = imagehash.whash
 	elif hashmethod == 'whash-db4':
+
 		def hashfunc(img):
 			return imagehash.whash(img, mode='db4')
 	elif hashmethod == 'colorhash':

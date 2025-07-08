@@ -7,6 +7,7 @@ import sys
 try:
 	# specify allowed values if possible (py3.8+)
 	from typing import Literal
+
 	WhashMode = Literal['haar', 'db4']  # type: ignore
 except ImportError:
 	WhashMode = str  # type: ignore
@@ -14,6 +15,7 @@ except ImportError:
 try:
 	# enable numpy array typing (py3.7+)
 	import numpy.typing
+
 	NDArray = numpy.typing.NDArray[numpy.bool_]
 except (AttributeError, ImportError):
 	NDArray = list  # type: ignore
@@ -27,6 +29,7 @@ if sys.version_info >= (3, 3):
 		from collections.abc import Callable
 	try:
 		from PIL import Image
+
 		MeanFunc = Callable[[NDArray], float]
 		HashFunc = Callable[[Image.Image], 'ImageHash']
 	except (TypeError, ImportError):
