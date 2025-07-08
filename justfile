@@ -58,19 +58,18 @@ test-all:
 
 # Check code coverage quickly with the default Python
 coverage:
-    coverage run --source ultranest -m pytest
+    coverage run --source imagehash -m pytest
     coverage report -m
     coverage html
     {{browser}} htmlcov/index.html
 
 # Generate Sphinx HTML documentation, including API docs
 docs:
-    rm -f docs/ultranest.rst
+    rm -f docs/imagehash.rst
     rm -f docs/modules.rst
-    sphinx-apidoc -H API -o docs/ ultranest
+    sphinx-apidoc -H API -o docs/ src/imagehash
     make -C docs clean
     make -C docs html
-    sed --in-place '/href="ultranest\/mlfriends.html"/d' docs/build/html/_modules/index.html
     {{browser}} docs/build/html/index.html
 
 # Compile the docs watching for changes
