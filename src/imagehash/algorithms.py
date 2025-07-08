@@ -2,7 +2,7 @@
 Hash algorithms for imagehash
 """
 
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 import numpy
 from PIL import ImageFilter
@@ -12,6 +12,7 @@ from imagehash.utils import ANTIALIAS, _find_all_segments
 
 if TYPE_CHECKING:
 	from PIL import Image
+
 	from imagehash.types import HashFunc, MeanFunc
 
 
@@ -124,7 +125,7 @@ def dhash_vertical(image: 'Image.Image', hash_size: int = 8) -> ImageHash:
 	return ImageHash(diff)
 
 
-def whash(image: 'Image.Image', hash_size: int = 8, image_scale: Union[int, None] = None, mode: str = 'haar', remove_max_haar_ll: bool = True) -> ImageHash:
+def whash(image: 'Image.Image', hash_size: int = 8, image_scale: int | None = None, mode: str = 'haar', remove_max_haar_ll: bool = True) -> ImageHash:
 	"""
 	Wavelet Hash computation.
 
@@ -236,7 +237,7 @@ def colorhash(image: 'Image.Image', binbits: int = 3) -> ImageHash:
 def crop_resistant_hash(
 	image: 'Image.Image',
 	hash_func: 'HashFunc' = dhash,
-	limit_segments: Union[int, None] = None,
+	limit_segments: int | None = None,
 	segment_threshold: int = 128,
 	min_segment_size: int = 500,
 	segmentation_image_size: int = 300,

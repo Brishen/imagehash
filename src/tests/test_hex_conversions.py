@@ -26,9 +26,18 @@ binary_to_hexadecimal_values = [
 	['00000000000000001111', '0000f'],
 	['11110000111100001111', 'f0f0f'],
 	['00001111000011110000', '0f0f0'],
-	['11110000000100100011010001010110011110001001101010111100110111101111', 'f0123456789abcdef'],
-	['1001111000111100110000011111000011110000110000111110011111000000', '9e3cc1f0f0c3e7c0'],
-	['1000111100001111000011110000111100001111000010110000101101111010', '8f0f0f0f0f0b0b7a'],
+	[
+		'11110000000100100011010001010110011110001001101010111100110111101111',
+		'f0123456789abcdef',
+	],
+	[
+		'1001111000111100110000011111000011110000110000111110011111000000',
+		'9e3cc1f0f0c3e7c0',
+	],
+	[
+		'1000111100001111000011110000111100001111000010110000101101111010',
+		'8f0f0f0f0f0b0b7a',
+	],
 ]
 
 # Each row is a test case where the first value is a hexadecimal sequence
@@ -51,27 +60,38 @@ hexadecimal_to_binary_values = [
 	['800000001', '100000000000000000000000000000000001'],
 	['0000000000001', '0000000000000000000000000000000000000000000000001'],
 	['1000000000001', '1000000000000000000000000000000000000000000000001'],
-	['0000000000000001', '0000000000000000000000000000000000000000000000000000000000000001'],
-	['8000000000000001', '1000000000000000000000000000000000000000000000000000000000000001'],
+	[
+		'0000000000000001',
+		'0000000000000000000000000000000000000000000000000000000000000001',
+	],
+	[
+		'8000000000000001',
+		'1000000000000000000000000000000000000000000000000000000000000001',
+	],
 ]
 
 # Each row is a test case where the first value is a hexadecimal
 # sequence and the second value is the expected bool array for it.
 hexadecimal_to_bool_array = [
-	['9e3cc1f0f0c3e7c0', np.array([
-		[True, False, False, True, True, True, True, False],
-		[False, False, True, True, True, True, False, False],
-		[True, True, False, False, False, False, False, True],
-		[True, True, True, True, False, False, False, False],
-		[True, True, True, True, False, False, False, False],
-		[True, True, False, False, False, False, True, True],
-		[True, True, True, False, False, True, True, True],
-		[True, True, False, False, False, False, False, False]])],
+	[
+		'9e3cc1f0f0c3e7c0',
+		np.array(
+			[
+				[True, False, False, True, True, True, True, False],
+				[False, False, True, True, True, True, False, False],
+				[True, True, False, False, False, False, False, True],
+				[True, True, True, True, False, False, False, False],
+				[True, True, True, True, False, False, False, False],
+				[True, True, False, False, False, False, True, True],
+				[True, True, True, False, False, True, True, True],
+				[True, True, False, False, False, False, False, False],
+			]
+		),
+	],
 ]
 
 
 class TestHexConversions(unittest.TestCase):
-
 	def setUp(self):
 		self.to_hex = imagehash.binary_array_to_hex
 		self.from_hex = imagehash.hex_to_hash
