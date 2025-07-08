@@ -73,7 +73,7 @@ hexadecimal_to_bool_array = [
 class TestHexConversions(unittest.TestCase):
 
 	def setUp(self):
-		self.to_hex = imagehash._binary_array_to_hex
+		self.to_hex = imagehash.binary_array_to_hex
 		self.from_hex = imagehash.hex_to_hash
 
 	def test_binary_array_to_hex_input(self):

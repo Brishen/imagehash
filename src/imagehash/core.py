@@ -3,8 +3,8 @@ Core classes for imagehash
 """
 
 import numpy
-from .types import NDArray
-from .utils import _binary_array_to_hex
+from imagehash.types import NDArray
+from imagehash.utils import binary_array_to_hex
 
 
 class ImageHash:
@@ -17,7 +17,7 @@ class ImageHash:
 		self.hash = binary_array  # type: NDArray
 
 	def __str__(self):
-		return _binary_array_to_hex(self.hash.flatten())
+		return binary_array_to_hex(self.hash.flatten())
 
 	def __repr__(self):
 		return repr(self.hash)

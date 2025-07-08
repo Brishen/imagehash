@@ -4,9 +4,9 @@ Hash algorithms for imagehash
 
 import numpy
 from PIL import Image, ImageFilter
-from .core import ImageHash, ImageMultiHash
-from .types import MeanFunc, HashFunc
-from .utils import ANTIALIAS, _find_all_segments
+from imagehash.core import ImageHash, ImageMultiHash
+from imagehash.types import MeanFunc, HashFunc
+from imagehash.utils import ANTIALIAS, _find_all_segments
 
 
 def average_hash(image, hash_size=8, mean=numpy.mean):

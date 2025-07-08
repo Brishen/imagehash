@@ -41,10 +41,10 @@ Basic usage
 
 	>>> from PIL import Image
 	>>> import imagehash
-	>>> hash = imagehash.average_hash(Image.open('tests/data/imagehash.png'))
+	>>> hash = imagehash.average_hash(Image.open('src/tests/data/imagehash.png'))
 	>>> print(hash)
 	ffd7918181c9ffff
-	>>> otherhash = imagehash.average_hash(Image.open('tests/data/peppers.png'))
+	>>> otherhash = imagehash.average_hash(Image.open('src/tests/data/peppers.png'))
 	>>> print(otherhash)
 	9f172786e71f1e00
 	>>> print(hash == otherhash)
@@ -123,7 +123,7 @@ The strings can be turned back into a ImageHash object as follows.
 
 For single perceptual hashes::
 
-	>>> original_hash = imagehash.phash(Image.open('tests/data/imagehash.png'))
+	>>> original_hash = imagehash.phash(Image.open('src/tests/data/imagehash.png'))
 	>>> hash_as_str = str(original_hash)
 	>>> print(hash_as_str)
 	ffd7918181c9ffff
@@ -135,7 +135,7 @@ For single perceptual hashes::
 
 For crop_resistant_hash::
 
-	>>> original_hash = imagehash.crop_resistant_hash(Image.open('tests/data/imagehash.png'), min_segment_size=500, segmentation_image_size=1000)
+	>>> original_hash = imagehash.crop_resistant_hash(Image.open('src/tests/data/imagehash.png'), min_segment_size=500, segmentation_image_size=1000)
 	>>> hash_as_str = str(original_hash)
 	>>> restored_hash = imagehash.hex_to_multihash(hash_as_str)
 	>>> assert restored_hash == original_hash
@@ -143,7 +143,7 @@ For crop_resistant_hash::
 
 For colorhash::
 
-	>>> original_hash = imagehash.colorhash(Image.open('tests/data/imagehash.png'), binbits=3)
+	>>> original_hash = imagehash.colorhash(Image.open('src/tests/data/imagehash.png'), binbits=3)
 	>>> hash_as_str = str(original_hash)
 	>>> restored_hash = imagehash.hex_to_flathash(hash_as_str, hashsize=3)
 

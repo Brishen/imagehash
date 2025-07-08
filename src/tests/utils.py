@@ -6,7 +6,7 @@ import unittest
 
 from PIL import Image
 
-import imagehash
+from imagehash import hex_to_hash
 
 CHECK_HASH_DEFAULT = range(2, 21)
 CHECK_HASH_SIZE_DEFAULT = range(-1, 2)
@@ -48,7 +48,7 @@ class TestImageHash(unittest.TestCase):
 	def check_hash_stored(self, func, image, sizes=CHECK_HASH_DEFAULT):
 		for hash_size in sizes:
 			image_hash = func(image, hash_size)
-			other_hash = imagehash.hex_to_hash(str(image_hash))
+			other_hash = hex_to_hash(str(image_hash))
 			emsg = 'stringified hash {} != original hash {}'.format(other_hash, image_hash)
 			self.assertEqual(image_hash, other_hash, emsg)
 			distance = image_hash - other_hash

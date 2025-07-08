@@ -3,8 +3,7 @@ Utility functions for imagehash
 """
 
 import numpy
-from PIL import Image, ImageFilter
-from .types import NDArray
+from PIL import Image
 
 try:
 	ANTIALIAS = Image.Resampling.LANCZOS
@@ -14,7 +13,7 @@ except AttributeError:
 	ANTIALIAS = Image.ANTIALIAS
 
 
-def _binary_array_to_hex(arr):
+def binary_array_to_hex(arr):
 	"""
 	internal function to make a hex string out of a binary array.
 	"""
@@ -90,7 +89,7 @@ def old_hex_to_hash(hexstr, hash_size=8):
 	for i in range(count // 2):
 		h = hexstr[i * 2:i * 2 + 2]
 		v = int('0x' + h, 16)
-		arr.append([v & 2**i > 0 for i in range(8)])
+		arr.append([v & 2 ** i > 0 for i in range(8)])
 	return ImageHash(numpy.array(arr))
 
 

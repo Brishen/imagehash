@@ -47,9 +47,17 @@ packages = ["imagehash"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/imagehash",
+    "src/imagehash",
     "/tests",
     "/find_similar_images.py",
     "/README.rst",
     "/LICENSE",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.4.1",
+    "pytest>=7.4.4",
+    "ruff>=0.12.2",
+    "six>=1.17.0",
 ]

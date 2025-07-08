@@ -34,14 +34,14 @@ from .core import ImageHash, ImageMultiHash
 
 # Import hash algorithms
 from .algorithms import (
-    average_hash, phash, phash_simple, dhash, dhash_vertical,
-    whash, colorhash, crop_resistant_hash
+	average_hash, phash, phash_simple, dhash, dhash_vertical,
+	whash, colorhash, crop_resistant_hash
 )
 
 # Import utility functions
 from .utils import (
-    hex_to_hash, hex_to_flathash, hex_to_multihash, old_hex_to_hash,
-    _find_all_segments, ANTIALIAS
+	hex_to_hash, hex_to_flathash, hex_to_multihash, old_hex_to_hash,
+	_find_all_segments, ANTIALIAS, binary_array_to_hex
 )
 
 # Import type definitions

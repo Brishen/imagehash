@@ -4,7 +4,7 @@ import unittest
 
 import imagehash
 
-from .utils import TestImageHash
+from tests.utils import TestImageHash
 
 
 class Test(TestImageHash):
