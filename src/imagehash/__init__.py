@@ -29,17 +29,23 @@ Rotation by 26: 21 Hamming difference
 
 from __future__ import absolute_import, division, print_function
 
-import sys
+# Import core classes
+from .core import ImageHash, ImageMultiHash
 
-import numpy
-from PIL import Image, ImageFilter
+# Import hash algorithms
+from .algorithms import (
+    average_hash, phash, phash_simple, dhash, dhash_vertical,
+    whash, colorhash, crop_resistant_hash
+)
 
-try:
-	ANTIALIAS = Image.Resampling.LANCZOS
-except AttributeError:
-	# deprecated in pillow 10
-	# https://pillow.readthedocs.io/en/stable/deprecations.html
-	ANTIALIAS = Image.ANTIALIAS
+# Import utility functions
+from .utils import (
+    hex_to_hash, hex_to_flathash, hex_to_multihash, old_hex_to_hash,
+    _find_all_segments, ANTIALIAS
+)
+
+# Import type definitions
+from .types import WhashMode, NDArray, MeanFunc, HashFunc
 
 __version__ = '4.3.2'
 
