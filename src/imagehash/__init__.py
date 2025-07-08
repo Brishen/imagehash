@@ -49,6 +49,7 @@ from .types import WhashMode, NDArray, MeanFunc, HashFunc
 
 __version__ = '4.3.2'
 
+# Copyright notice
 """
 You may copy this file, if you keep the copyright information below:
 
@@ -82,9 +83,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
-
-
-def _binary_array_to_hex(arr):
 	"""
 	internal function to make a hex string out of a binary array.
 	"""
