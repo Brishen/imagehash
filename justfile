@@ -58,7 +58,7 @@ coverage:
     coverage run --source imagehash -m pytest
     coverage report -m
     coverage html
-    {{browser}} htmlcov/index.html
+    # {{browser}} htmlcov/index.html
 
 
 # Package and upload a release
