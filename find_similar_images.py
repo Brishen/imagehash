@@ -53,7 +53,7 @@ if __name__ == '__main__':  # noqa: C901
 
 	def usage():
 		sys.stderr.write(
-			"""SYNOPSIS: %s [ahash|phash|dhash|...] [<directory>]
+			f"""SYNOPSIS: {sys.argv[0]} [ahash|phash|dhash|...] [<directory>]
 
 Identifies similar images in the directory.
 
@@ -68,7 +68,6 @@ Method:
 
 (C) Johannes Buchner, 2013-2017
 """
-			% sys.argv[0]
 		)
 		sys.exit(1)
 

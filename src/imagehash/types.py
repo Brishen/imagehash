@@ -21,17 +21,21 @@ except (AttributeError, ImportError):
 	NDArray = list  # type: ignore
 
 # type of Callable
-if sys.version_info >= (3, 3):
-	if sys.version_info >= (3, 9, 0) and sys.version_info <= (3, 9, 1):
-		# https://stackoverflow.com/questions/65858528/is-collections-abc-callable-bugged-in-python-3-9-1
-		from typing import Callable
-	else:
-		from collections.abc import Callable
-	try:
-		from PIL import Image
+if sys.version_info >= (3, 9, 0) and sys.version_info <= (3, 9, 1):
+	# https://stackoverflow.com/questions/65858528/is-collections-abc-callable-bugged-in-python-3-9-1
+	from typing import Callable
+else:
+	from collections.abc import Callable
 
-		MeanFunc = Callable[[NDArray], float]
-		HashFunc = Callable[[Image.Image], 'ImageHash']
-	except (TypeError, ImportError):
-		MeanFunc = Callable  # type: ignore
-		HashFunc = Callable  # type: ignore
+try:
+	from PIL import Image
+	from typing import TYPE_CHECKING
+	
+	if TYPE_CHECKING:
+		from imagehash.core import ImageHash
+
+	MeanFunc = Callable[[NDArray], float]
+	HashFunc = Callable[[Image.Image], 'ImageHash']
+except (TypeError, ImportError):
+	MeanFunc = Callable  # type: ignore
+	HashFunc = Callable  # type: ignore
